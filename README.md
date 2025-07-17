@@ -75,4 +75,210 @@ Your work will be automatically submitted when you push to your GitHub Classroom
 - [Render Documentation](https://render.com/docs)
 - [Railway Documentation](https://docs.railway.app/)
 - [Vercel Documentation](https://vercel.com/docs)
-- [Netlify Documentation](https://docs.netlify.com/) 
+- [Netlify Documentation](https://docs.netlify.com/)
+  ## answer
+  # GitHub Actions CI/CD Workflow (.github/workflows/main.yml)
+
+  name: MERN CI/CD Pipeline
+
+on:
+
+  push:
+  
+    branches: [ main ]
+    
+  pull_request:
+  
+    branches: [ main ]
+
+jobs:
+
+  backend:
+  
+    runs-on: ubuntu-latest
+    
+    name: Backend Test and Deploy
+    
+    steps:
+    
+      - name: Checkout code
+      
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+      
+        uses: actions/setup-node@v3
+        
+        with:
+        
+          node-version: 18
+
+      - name: Install backend dependencies
+      
+        run: |
+        
+          cd backend
+          
+          npm ci
+
+      - name: Run backend tests
+      
+        run: |
+        
+          cd backend
+          
+          npm test
+
+  frontend:
+  
+    runs-on: ubuntu-latest
+    
+    name: Frontend Build and Deploy
+    
+    steps:
+    
+      - name: Checkout code
+      
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+      
+        uses: actions/setup-node@v3
+        
+        with:
+        
+          node-version: 18
+
+      - name: Install frontend dependencies
+      
+        run: |
+        
+          cd frontend
+          
+          npm ci
+
+      - name: Build React App
+      
+        run: |
+        
+          cd frontend
+          
+          npm run build
+
+      - name: Deploy to Vercel
+      
+        uses: amondnet/vercel-action@v25
+        
+        with:
+        
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          
+          working-directory: ./frontend
+          
+##  Environment Variable Templates
+# backend/.env.example
+
+PORT=5000
+
+MONGO_URI=your_mongodb_uri_here
+
+NODE_ENV=production
+
+JWT_SECRET=your_jwt_secret_here
+
+SENTRY_DSN=your_sentry_dsn_here
+
+# frontend/.env.example
+
+REACT_APP_API_URL=https://your-backend-api-url.com/api
+
+REACT_APP_SENTRY_DSN=your_sentry_dsn_here
+
+##  MERN Stack Application Deployment
+
+This is a full-stack MERN application deployed to production with CI/CD automation, environment configuration, and application monitoring.
+
+## 🚀 Live Links
+
+- **Frontend**: [https://your-frontend-url.vercel.app](https://your-frontend-url.vercel.app)
+- 
+- **Backend API**: [https://your-backend-url.onrender.com/api](https://your-backend-url.onrender.com/api)
+
+---
+
+## 📦 Tech Stack
+
+- **Frontend**: React, Vite/CRA, TailwindCSS (if used)
+- 
+- **Backend**: Node.js, Express
+- 
+- **Database**: MongoDB Atlas
+- 
+- **CI/CD**: GitHub Actions
+- 
+- **Deployment**:
+- 
+  - Frontend: Vercel
+  - 
+  - Backend: Render
+  - 
+- **Monitoring**: Sentry, UptimeRobot, Logging with Morgan/Winston
+
+---
+
+## 📁 Project Structure
+
+root/
+│
+├── frontend/ # React App
+│ └── .env # Environment variables
+│
+├── backend/ # Express App
+│ └── .env # Environment variables
+│
+└── .github/workflows/ # GitHub Actions CI/CD
+└── main.yml
+
+
+## ⚙️ Environment Variables
+
+### `backend/.env.example`
+```env
+PORT=5000
+
+MONGO_URI=your_mongo_connection_string
+
+JWT_SECRET=your_jwt_secret
+
+NODE_ENV=production
+
+SENTRY_DSN=your_sentry_dsn
+
+## To Deploy
+
+# Push changes to main
+
+git add .
+
+git commit -m "Deploy new feature"
+
+git push origin main
+
+## Testing
+# frontend
+
+cd frontend
+
+npm run test
+
+# backend
+
+cd backend
+
+npm test
+
+
